@@ -1,11 +1,14 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Infrastructure.DataAccess
 {
     public class EFcoreContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
 
         public EFcoreContext(DbContextOptions<EFcoreContext> options)
             :base(options)
@@ -14,6 +17,8 @@ namespace Infrastructure.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
             base.OnModelCreating(modelBuilder);
         }
     }

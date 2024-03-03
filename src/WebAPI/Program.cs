@@ -34,4 +34,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// seed data
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<EFcoreContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+
+    await GenerateFakeData.SeedDataAsync(context, logger);
+    await context.Database.MigrateAsync();
+}
+
 app.Run();

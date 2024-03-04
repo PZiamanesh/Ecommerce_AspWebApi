@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.DataAccess.EFcoreMappings
+namespace Infrastructure.Presistence.EFcoreMappings
 {
     public class ProductBrandMapping : IEntityTypeConfiguration<ProductBrand>
     {

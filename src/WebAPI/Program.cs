@@ -1,4 +1,4 @@
-using Infrastructure.DataAccess;
+using Infrastructure.Presistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,10 +38,17 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<EFcoreContext>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
 
-    await GenerateFakeData.SeedDataAsync(context, logger);
-    await context.Database.MigrateAsync();
+    try
+    {
+        await SeedData.SeedDataAsync(context);
+        await context.Database.MigrateAsync();
+    }
+    catch (Exception exp)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger>();
+        logger.LogError(exp, "error occured during migration.");
+    }
 }
 
 app.Run();

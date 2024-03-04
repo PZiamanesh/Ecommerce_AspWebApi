@@ -7,38 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.DataAccess
+namespace Infrastructure.Presistence
 {
-    public class GenerateFakeData
+    public class SeedData
     {
-        public static async Task SeedDataAsync(EFcoreContext context, ILoggerFactory loggerFactory)
+        public static async Task SeedDataAsync(EFcoreContext context)
         {
-			try
-			{
-                if (!await context.ProductBrands.AnyAsync())
-                {
-                    var productPrands = ProductBrands();
-                    await context.ProductBrands.AddRangeAsync(productPrands);
-                    context.SaveChanges();
-                }
-                if (!await context.ProductTypes.AnyAsync())
-                {
-                    var productTypes = ProductTypes();
-                    await context.ProductTypes.AddRangeAsync(productTypes);
-                    context.SaveChanges();
-                }
-                if (!await context.Products.AnyAsync())
-                {
-                    var producs = Products();
-                    await context.Products.AddRangeAsync(producs);
-                    context.SaveChanges();
-                }
+            if (!await context.ProductBrands.AnyAsync())
+            {
+                var productPrands = ProductBrands();
+                await context.ProductBrands.AddRangeAsync(productPrands);
+                context.SaveChanges();
             }
-			catch (Exception exp)
-			{
-                var logger = loggerFactory.CreateLogger<GenerateFakeData>();
-                logger.LogError(exp, "seed data error.");
-			}
+            if (!await context.ProductTypes.AnyAsync())
+            {
+                var productTypes = ProductTypes();
+                await context.ProductTypes.AddRangeAsync(productTypes);
+                context.SaveChanges();
+            }
+            if (!await context.Products.AnyAsync())
+            {
+                var producs = Products();
+                await context.Products.AddRangeAsync(producs);
+                context.SaveChanges();
+            }
         }
 
         private static List<ProductBrand> ProductBrands()

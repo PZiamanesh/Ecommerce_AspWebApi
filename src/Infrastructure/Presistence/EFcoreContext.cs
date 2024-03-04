@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Infrastructure.DataAccess
+namespace Infrastructure.Presistence
 {
     public class EFcoreContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace Infrastructure.DataAccess
         public DbSet<ProductType> ProductTypes { get; set; }
 
         public EFcoreContext(DbContextOptions<EFcoreContext> options)
-            :base(options)
+            : base(options)
         {
         }
 

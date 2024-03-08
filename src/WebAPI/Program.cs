@@ -1,7 +1,34 @@
+using Application.Contracts;
+using Application.Features.Products.Queries;
+using Domain.Entities;
 using Infrastructure.Presistence;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region application services
+
+
+
+#endregion
+
+
+#region infrastructure services
+
+// ef core
+builder.Services.AddDbContext<EFcoreContext>(ops =>
+{
+    ops.UseSqlServer(builder.Configuration["ConnectionStrings:EfCoreConn"]);
+});
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+#endregion
+
+
+#region WebUI services
 
 // controller services
 builder.Services.AddControllers();
@@ -10,17 +37,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ef core
-builder.Services.AddDbContext<EFcoreContext>(ops =>
-{
-    ops.UseSqlServer(builder.Configuration["ConnectionStrings:EfCoreConn"]);
-});
+// mediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllProductsQuery>());
 
 
+#endregion
 
 
-
-
+#region request pipline
 
 var app = builder.Build();
 
@@ -52,3 +76,6 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+#endregion
+
